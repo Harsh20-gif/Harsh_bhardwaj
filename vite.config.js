@@ -10,9 +10,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
           'motion-vendor': ['framer-motion', 'lenis'],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+          'three-vendor': ['three', '@react-three/fiber'],
         },
       },
     },

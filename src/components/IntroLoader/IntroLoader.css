@@ -1,0 +1,111 @@
+.intro-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  background: rgba(7, 9, 13, 0.96);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 280ms var(--ease-out),
+    transform 280ms var(--ease-out);
+}
+
+.intro-loader--exit {
+  opacity: 0;
+  transform: translate3d(0, -16px, 0);
+  pointer-events: none;
+}
+
+.intro-loader__box {
+  width: 100%;
+  max-width: 560px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--bg-code);
+  border: 1px solid var(--border-cyan);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 36px -12px rgba(0, 229, 255, 0.35);
+}
+
+.intro-loader__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding-bottom: var(--space-1);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.72rem;
+  color: var(--accent-amber);
+}
+
+.intro-loader__skip {
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+}
+
+.intro-loader__skip:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.intro-loader__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 72px;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.intro-loader__line {
+  opacity: 0;
+  transform: translate3d(0, 4px, 0);
+  animation: boot-line-in 180ms var(--ease-out) forwards;
+}
+
+.intro-loader__line--ready {
+  color: var(--accent-cyan);
+}
+
+@keyframes boot-line-in {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.intro-loader__name {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 6vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+
+.intro-loader__char {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition:
+    opacity 240ms var(--ease-out),
+    transform 240ms var(--ease-out);
+}
+
+.intro-loader__name--reveal .intro-loader__char {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}

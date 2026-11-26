@@ -59,13 +59,13 @@ export const PROFILE = {
   personal: {
     name: 'Harsh Bhardwaj',
     monogram: 'HB',
-    rolePrimary: 'Java Backend Developer | Spring Boot',
+    rolePrimary: 'Java Backend Developer',
     rolesTyped: [
-      'Java Backend Developer | Spring Boot',
-      'Java Full Stack Developer',
-      'Spring Security & REST API Engineer',
-      'Laravel & Java Backend Developer',
+      'Java Backend Developer',
+      'Spring Boot Engineer',
+      'REST API Architect',
     ],
+    liveStatusChip: 'JWT auth · MySQL · Build passing',
     tagline:
       'Building JWT-secured Spring Boot REST APIs, relational MySQL architectures, and React.js frontends from database schema to user interface.',
     location: 'Ghaziabad, Uttar Pradesh',
@@ -79,18 +79,23 @@ export const PROFILE = {
     resumeUrl: `${BASE_URL}resume.pdf`,
     portraitUrl: `${BASE_URL}portrait.webp`,
     portraitAlt: 'Harsh Bhardwaj, Java Backend Developer wearing a navy blazer and white shirt',
-    availability: 'Open to Entry-Level Java / Spring Boot Roles',
   },
 
+  introBootLines: [
+    '[BOOT] Initializing Spring Boot runtime · Java 17 LTS ... OK',
+    '[AUTH] Mounting Spring Security filter chain (JWT + RBAC) ... OK',
+    '[LINK] Connected to MySQL & Mission Control telemetry // READY',
+  ],
+
   navLinks: [
-    { id: 'about', label: 'About' },
-    { id: 'tech-stack', label: 'Stack' },
-    { id: 'architecture', label: 'Architecture' },
-    { id: 'coding-lab', label: 'Lab' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'education', label: 'Education' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'about', label: 'About', hint: 'Summary & metrics' },
+    { id: 'tech-stack', label: 'Stack', hint: '32 resume skills' },
+    { id: 'architecture', label: 'Architecture', hint: 'JWT request flow' },
+    { id: 'coding-lab', label: 'Code Lab', hint: 'Interactive REST endpoints' },
+    { id: 'projects', label: 'Projects', hint: '12 shipped builds' },
+    { id: 'experience', label: 'Experience', hint: '3 internships' },
+    { id: 'education', label: 'Education', hint: 'Degrees & certifications' },
+    { id: 'contact', label: 'Contact', hint: 'Email, phone & socials' },
   ],
 
   about: {
@@ -137,8 +142,6 @@ export const PROFILE = {
     ],
   },
 
-  // Skill list anchored on the Java Full Stack resume and merged without duplicates
-  // with additional skills from the Laravel & Java Backend resume.
   skillGroups: [
     {
       category: 'Languages',
@@ -212,191 +215,207 @@ export const PROFILE = {
 
   architecture: {
     endpointSample: 'POST /api/v1/orders',
-    authHeaderSample: 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...',
+    authHeaderSample: 'Authorization: Bearer <demo.jwt.token>',
     nodes: [
       {
         id: 'client',
         step: '01',
-        title: 'React Client',
-        subtitle: 'UI & HTTP Request',
+        title: 'Client',
+        subtitle: 'React UI Request',
         protocol: 'HTTPS / JSON',
         iconKey: 'react',
         description:
-          'Captures user action (cart checkout, job stage update, or student enrollment) and dispatches a REST request with Bearer token.',
-        payload: '{ "productId": 42, "quantity": 2 }',
-        badge: 'FETCH / STATE',
+          'React.js frontend dispatches authenticated REST payloads (order checkout, job stage updates, or enrollment actions).',
+        payload: 'fetch("/api/v1/orders", { method: "POST", headers: { Authorization } })',
+        badge: 'REQUEST SENT',
       },
       {
         id: 'controller',
         step: '02',
-        title: 'REST API (Spring Boot)',
-        subtitle: '@RestController',
+        title: 'REST API',
+        subtitle: 'Spring Boot @RestController',
         protocol: 'DispatcherServlet',
         iconKey: 'springboot',
         description:
-          'Routes HTTP endpoints, deserializes request DTOs, and enforces bean validation rules before handing off to security and services.',
-        payload: '@PostMapping("/api/v1/orders")',
-        badge: '201 CREATED',
+          'Routes HTTP endpoints, deserializes request DTOs, and enforces bean validation rules before business execution.',
+        payload: '@PostMapping("/orders") public ResponseEntity<OrderDto> create(...)',
+        badge: 'DTO VALIDATED',
       },
       {
         id: 'security',
         step: '03',
-        title: 'Spring Security (JWT + Roles)',
-        subtitle: 'Auth Filter & RBAC',
-        protocol: 'Stateless JWT',
+        title: 'Spring Security (JWT)',
+        subtitle: 'Filter Chain + Roles',
+        protocol: 'Stateless Bearer',
         iconKey: 'springsecurity',
         description:
-          'Validates JWT signature and expiration, hydrates SecurityContext, and enforces role-based access (CUSTOMER / ADMIN).',
-        payload: '@PreAuthorize("hasRole(\'CUSTOMER\')")',
-        badge: 'HS256 VERIFIED',
+          'JwtAuthFilter verifies HS256 token signature, populates SecurityContext, and enforces CUSTOMER / ADMIN roles.',
+        payload: '@PreAuthorize("hasRole(\'CUSTOMER\')") // ROLE VERIFIED',
+        badge: 'JWT VERIFIED',
       },
       {
         id: 'service',
         step: '04',
-        title: 'Service Layer',
+        title: 'Service',
         subtitle: '@Service & @Transactional',
-        protocol: 'Business Rules',
+        protocol: 'Domain Rules',
         iconKey: 'java',
         description:
-          'Executes core domain logic (stock calculation, grade rules, stage transitions) and handles exceptions consistently.',
-        payload: 'orderService.placeOrder(user, dto)',
-        badge: 'ACID BOUNDARY',
+          'Coordinates business logic (order totals, grade calculation, stage transitions) and throws consistent domain errors.',
+        payload: 'orderService.placeOrder(customerEmail, requestDto)',
+        badge: 'ACID TX',
       },
       {
         id: 'jpa',
         step: '05',
         title: 'Spring Data JPA',
-        subtitle: 'Hibernate & Repositories',
+        subtitle: 'Hibernate & JpaRepository',
         protocol: 'ORM / JPQL',
         iconKey: 'hibernate',
         description:
-          'Maps Java entities (@ManyToOne, @OneToMany) to relational records via JpaRepository without boilerplate SQL.',
+          'Translates entity graphs (@ManyToOne, @OneToMany) into prepared statements via JpaRepository.',
         payload: 'orderRepository.save(orderEntity)',
-        badge: 'ENTITY MAPPED',
+        badge: 'ENTITY SAVED',
       },
       {
         id: 'mysql',
         step: '06',
         title: 'MySQL',
         subtitle: 'Relational Persistence',
-        protocol: 'JDBC Pool',
+        protocol: 'InnoDB / JDBC',
         iconKey: 'mysql',
         description:
-          'Persists normalized tables for users, products, orders, enrollments, and job stages with foreign-key integrity.',
-        payload: 'COMMIT; -- 1 row inserted (orders)',
-        badge: 'TX COMMITTED',
+          'Commits normalized records across users, products, categories, and orders with foreign-key integrity.',
+        payload: 'COMMIT; -- 201 Created returned to Client',
+        badge: 'COMMITTED',
       },
     ],
   },
 
+  // Interactive API Lab — clearly labelled static/mock demonstration payloads
   codingLab: {
-    workspace: 'harsh-backend-showcase',
-    files: [
+    demoNotice: 'DEMO · STATIC MOCK DATA — Simulated Spring Boot + JWT endpoints (no live server calls)',
+    endpoints: [
       {
-        id: 'controller',
-        filename: 'OrderController.java',
-        path: 'src/main/java/com/harsh/ecommerce/controller/OrderController.java',
-        language: 'Java · Spring Boot',
-        code: `@RestController
-@RequestMapping("/api/v1/orders")
-@RequiredArgsConstructor
-public class OrderController {
-
-    private final OrderService orderService;
-
-    @PostMapping
-    @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<OrderResponse> placeOrder(
-            @AuthenticationPrincipal UserDetails principal,
-            @Valid @RequestBody OrderRequest request) {
-
-        OrderResponse created = orderService.createOrder(
-                principal.getUsername(), request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
-
-    @PatchMapping("/{orderId}/cancel")
-    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
-    public ResponseEntity<OrderResponse> cancelOrder(
-            @PathVariable Long orderId,
-            @AuthenticationPrincipal UserDetails principal) {
-
-        return ResponseEntity.ok(
-                orderService.cancelOrder(orderId, principal.getUsername()));
-    }
+        id: 'auth-login',
+        method: 'POST',
+        path: '/auth/login',
+        label: 'POST /auth/login',
+        summary: 'Authenticates user credentials via Spring Security and issues a role-scoped JWT.',
+        requestHeaders: [
+          'Content-Type: application/json',
+          'Accept: application/json',
+        ],
+        requestBody: `{
+  "email": "customer@example.dev",
+  "password": "••••••••••••"
 }`,
+        statusCode: '200 OK',
+        latency: '18 ms (demo)',
+        responseBody: `{
+  "tokenType": "Bearer",
+  "expiresIn": 3600,
+  "user": {
+    "email": "customer@example.dev",
+    "roles": ["ROLE_CUSTOMER"]
+  },
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0b21lckBleGFtcGxlLmRldiIsInJvbGVzIjpbIlJPTEVfQ1VTVE9NRVIiXSwiaWF0IjoxNzk1NzE2MDAwLCJleHAiOjE3OTU3MTk2MDB9.demoSig9kQ2xP"
+}`,
+        jwt: {
+          header: 'eyJhbGciOiJIUzI1NiJ9',
+          payload: 'eyJzdWIiOiJjdXN0b21lckBleGFtcGxlLmRldiIsInJvbGVzIjpbIlJPTEVfQ1VTVE9NRVIiXSwiaWF0IjoxNzk1NzE2MDAwLCJleHAiOjE3OTU3MTk2MDB9',
+          signature: 'demoSig9kQ2xP',
+          decodedHeader: '{ "alg": "HS256", "typ": "JWT" }',
+          decodedClaims: `{
+  "sub": "customer@example.dev",
+  "roles": ["ROLE_CUSTOMER"],
+  "iat": 1795716000,
+  "exp": 1795719600
+}`,
+        },
       },
       {
-        id: 'entity',
-        filename: 'Order.java',
-        path: 'src/main/java/com/harsh/ecommerce/entity/Order.java',
-        language: 'Java · Spring Data JPA',
-        code: `@Entity
-@Table(name = "orders")
-@Getter @Setter
-@NoArgsConstructor
-public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private User customer;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private OrderStatus status = OrderStatus.PLACED;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalAmount;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> items = new ArrayList<>();
+        id: 'get-orders',
+        method: 'GET',
+        path: '/orders',
+        label: 'GET /orders',
+        summary: 'Fetches customer orders using Spring Data JPA repository queries after JWT validation.',
+        requestHeaders: [
+          'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIi...',
+          'Accept: application/json',
+        ],
+        requestBody: `// No request body for GET /orders
+// Principal extracted from SecurityContextHolder`,
+        statusCode: '200 OK',
+        latency: '14 ms (demo)',
+        responseBody: `{
+  "page": 0,
+  "size": 2,
+  "totalElements": 2,
+  "orders": [
+    {
+      "orderId": 1042,
+      "status": "PLACED",
+      "totalAmount": 2499.00,
+      "itemsCount": 2
+    },
+    {
+      "orderId": 1038,
+      "status": "DELIVERED",
+      "totalAmount": 899.00,
+      "itemsCount": 1
+    }
+  ]
 }`,
+        jwt: {
+          header: 'eyJhbGciOiJIUzI1NiJ9',
+          payload: 'eyJzdWIiOiJjdXN0b21lckBleGFtcGxlLmRldiIsInJvbGVzIjpbIlJPTEVfQ1VTVE9NRVIiXSwic2NvcGUiOiJvcmRlcnM6cmVhZCJ9',
+          signature: 'demoSig4mR8wA',
+          decodedHeader: '{ "alg": "HS256", "typ": "JWT" }',
+          decodedClaims: `{
+  "sub": "customer@example.dev",
+  "roles": ["ROLE_CUSTOMER"],
+  "scope": "orders:read"
+}`,
+        },
       },
       {
-        id: 'test',
-        filename: 'JobApplicationServiceTest.java',
-        path: 'src/test/java/com/harsh/tracker/JobApplicationServiceTest.java',
-        language: 'Java · JUnit 5',
-        code: `@ExtendWith(MockitoExtension.class)
-class JobApplicationServiceTest {
-
-    @Mock
-    private JobApplicationRepository repository;
-
-    @InjectMocks
-    private JobApplicationService service;
-
-    @Test
-    void shouldUpdateStageFromAppliedToInterview() {
-        JobApplication app = new JobApplication(
-                1L, "Backend Engineer", ApplicationStage.APPLIED);
-        when(repository.findById(1L)).thenReturn(Optional.of(app));
-        when(repository.save(any())).thenReturn(app);
-
-        JobApplication updated = service.updateStage(
-                1L, ApplicationStage.INTERVIEW);
-
-        assertEquals(ApplicationStage.INTERVIEW, updated.getStage());
-        verify(repository).save(app);
-    }
+        id: 'cancel-order',
+        method: 'POST',
+        path: '/orders/{id}/cancel',
+        label: 'POST /orders/{id}/cancel',
+        summary: 'Executes @PreAuthorize role & ownership check, then updates order status transactionally in MySQL.',
+        requestHeaders: [
+          'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIi...',
+          'Content-Type: application/json',
+        ],
+        requestBody: `{
+  "orderId": 1042,
+  "reason": "Updated delivery schedule"
 }`,
+        statusCode: '200 OK',
+        latency: '22 ms (demo)',
+        responseBody: `{
+  "orderId": 1042,
+  "previousStatus": "PLACED",
+  "status": "CANCELLED",
+  "refundEligible": true,
+  "updatedBy": "customer@example.dev"
+}`,
+        jwt: {
+          header: 'eyJhbGciOiJIUzI1NiJ9',
+          payload: 'eyJzdWIiOiJjdXN0b21lckBleGFtcGxlLmRldiIsInJvbGVzIjpbIlJPTEVfQ1VTVE9NRVIiXSwic2NvcGUiOiJvcmRlcnM6d3JpdGUifQ',
+          signature: 'demoSig7zT1vL',
+          decodedHeader: '{ "alg": "HS256", "typ": "JWT" }',
+          decodedClaims: `{
+  "sub": "customer@example.dev",
+  "roles": ["ROLE_CUSTOMER"],
+  "scope": "orders:write"
+}`,
+        },
       },
     ],
-    terminalLines: [
-      { type: 'cmd', text: '$ mvn test' },
-      { type: 'info', text: '[INFO] Scanning for projects...' },
-      { type: 'info', text: '[INFO] --- surefire:3.2.5:test (default-test) @ ecommerce-api ---' },
-      { type: 'info', text: '[INFO] Running com.harsh.ecommerce.OrderControllerTest' },
-      { type: 'pass', text: '[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0 - PASS' },
-      { type: 'info', text: '[INFO] Running com.harsh.tracker.JobApplicationServiceTest' },
-      { type: 'pass', text: '[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0 - PASS' },
-      { type: 'info', text: '[INFO] -------------------------------------------------------' },
-      { type: 'success', text: 'mvn test ✓ BUILD SUCCESS  (9/9 passed · 2.41 s)' },
-    ],
+    mvnOutput: 'mvn test ✓ BUILD SUCCESS (JUnit Service & Controller Suites · 9/9 passed)',
   },
 
   projectCategories: [

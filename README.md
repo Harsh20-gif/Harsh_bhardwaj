@@ -29,13 +29,17 @@ Mobile-first, animated personal portfolio website for **Harsh Bhardwaj** (Java B
     │   ├── variables.css
     │   └── global.css
     └── components/
+        ├── IntroLoader/        # Terminal boot sequence + split-text intro (React state only)
+        ├── CustomCursor/       # Desktop fine-pointer cursor dot + ring
+        ├── CommandPalette/     # Ctrl+K quick section & action switcher
+        ├── TerminalOverlay/    # Backtick (`) interactive developer shell
         ├── Navbar/
-        ├── Hero/               # Hero + lazy HeroScene.jsx
+        ├── Hero/               # Split-text Hero + InstancedMesh 3D HeroScene (pauses off-screen)
         ├── About/
         ├── TechStack/
-        ├── Architecture/       # Sequential Spring Boot request pipeline diagram
-        ├── CodingLab/          # VS Code editor typing animation + Maven terminal
-        ├── Projects/           # 12 projects + accessible details modal
+        ├── Architecture/       # Sequential Spring Boot request pipeline + animated packet
+        ├── CodingLab/          # Interactive REST endpoint & JWT demo inspector + Maven status
+        ├── Projects/           # 12 spotlight/tilt cards + Framer Motion layoutId modal
         ├── Experience/         # Vertical internship timeline
         ├── Education/          # Degrees & certifications
         └── Contact/            # Direct links, copy email, mailto composer, footer

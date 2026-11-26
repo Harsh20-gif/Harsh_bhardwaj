@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { FaArrowDown, FaArrowRight, FaPlay, FaRotateRight } from 'react-icons/fa6';
 import { PROFILE } from '../../data/profile';
 import { TechIcon } from '../../utils/techIcons';
+import { triggerTapRipple } from '../../utils/tapRipple';
 import './Architecture.css';
 
 export default function Architecture({ prefersReducedMotion }) {
@@ -14,26 +15,31 @@ export default function Architecture({ prefersReducedMotion }) {
 
   const [litCount, setLitCount] = useState(prefersReducedMotion ? nodes.length : 0);
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [packetIndex, setPacketIndex] = useState(prefersReducedMotion ? nodes.length - 1 : -1);
   const [traceRunKey, setTraceRunKey] = useState(0);
 
   useEffect(() => {
     if (prefersReducedMotion) {
       setLitCount(nodes.length);
       setSelectedIdx(nodes.length - 1);
+      setPacketIndex(nodes.length - 1);
       return;
     }
     if (!inView && traceRunKey === 0) return;
 
     setLitCount(1);
     setSelectedIdx(0);
+    setPacketIndex(0);
 
     const timers = [];
     for (let i = 1; i < nodes.length; i++) {
-      const t = setTimeout(() => {
-        setLitCount(i + 1);
-        setSelectedIdx(i);
-      }, i * 380);
-      timers.push(t);
+      timers.push(
+        setTimeout(() => {
+          setLitCount(i + 1);
+          setSelectedIdx(i);
+          setPacketIndex(i);
+        }, i * 360)
+      );
     }
 
     return () => timers.forEach(clearTimeout);
@@ -41,7 +47,8 @@ export default function Architecture({ prefersReducedMotion }) {
 
   const activeNode = nodes[selectedIdx] || nodes[0];
 
-  const handleReplay = () => {
+  const handleReplay = (e) => {
+    triggerTapRipple(e);
     if (prefersReducedMotion) return;
     setTraceRunKey((k) => k + 1);
   };
@@ -59,13 +66,12 @@ export default function Architecture({ prefersReducedMotion }) {
           <span className="section-kicker">04 // BACKEND REQUEST PIPELINE</span>
           <h2 className="section-title">System Architecture</h2>
           <p className="section-subtitle">
-            End-to-end request lifecycle across my Spring Boot REST systems — from React client
-            dispatch through stateless JWT authorization to transactional MySQL persistence.
+            Client → REST API → Spring Security (JWT) → Service → Spring Data JPA → MySQL. Tap any
+            node to inspect layer responsibilities or replay the data packet trace.
           </p>
         </motion.div>
 
         <div ref={containerRef} className="arch__board">
-          {/* Request Banner */}
           <div className="arch__toolbar">
             <div className="arch__endpoint mono">
               <span className="arch__method">POST</span>
@@ -75,33 +81,37 @@ export default function Architecture({ prefersReducedMotion }) {
 
             <button
               type="button"
-              className="btn btn-secondary arch__replay-btn"
+              className="btn btn-secondary arch__replay-btn ripple-host"
               onClick={handleReplay}
               disabled={prefersReducedMotion}
               title="Replay animated request pipeline"
             >
               {traceRunKey > 0 ? <FaRotateRight aria-hidden="true" /> : <FaPlay aria-hidden="true" />}
-              <span>Trace Flow</span>
+              <span>Trace Packet</span>
             </button>
           </div>
 
-          {/* Pipeline Nodes */}
           <div className="arch__pipeline" role="list" aria-label="Backend request flow stages">
             {nodes.map((node, index) => {
               const isLit = index < litCount;
               const isSelected = index === selectedIdx;
               const isSecurity = node.id === 'security';
+              const hasActivePacket = packetIndex === index;
 
               return (
                 <div key={node.id} className="arch__step-wrapper" role="listitem">
                   <button
                     type="button"
-                    onClick={() => setSelectedIdx(index)}
+                    onClick={(e) => {
+                      triggerTapRipple(e);
+                      setSelectedIdx(index);
+                    }}
                     className={[
-                      'arch__node',
+                      'arch__node ripple-host',
                       isLit ? 'arch__node--lit' : '',
                       isSelected ? 'arch__node--selected' : '',
                       isSecurity ? 'arch__node--security' : '',
+                      hasActivePacket ? 'arch__node--packet' : '',
                     ].join(' ')}
                     aria-pressed={isSelected}
                   >
@@ -134,11 +144,18 @@ export default function Architecture({ prefersReducedMotion }) {
                       aria-hidden="true"
                     >
                       <span className="arch__connector-line" />
+                      {index + 1 <= litCount && !prefersReducedMotion && (
+                        <span
+                          className={`arch__packet ${
+                            index + 1 === packetIndex ? 'arch__packet--moving' : ''
+                          }`}
+                        />
+                      )}
                       <span className="arch__connector-arrow arch__connector-arrow--down">
-                        <FaArrowDown size={12} />
+                        <FaArrowDown size={11} />
                       </span>
                       <span className="arch__connector-arrow arch__connector-arrow--right">
-                        <FaArrowRight size={12} />
+                        <FaArrowRight size={11} />
                       </span>
                     </div>
                   )}
@@ -147,7 +164,6 @@ export default function Architecture({ prefersReducedMotion }) {
             })}
           </div>
 
-          {/* Interactive Layer Inspector */}
           <div className="arch__inspector" aria-live="polite">
             <div className="arch__inspector-head mono">
               <span className="arch__inspector-label">

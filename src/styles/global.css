@@ -36,17 +36,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Subtle engineering grid across page */
+/* Subtle 40px blueprint grid */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: -2;
   background-image:
-    linear-gradient(to right, rgba(0, 229, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 229, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 229, 255, 0.032) 1px, transparent 1px);
   background-size: 40px 40px;
+}
+
+/* Lightweight micro-grain noise texture (zero SVG filter rasterization overhead) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.045;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.75) 0.55px, transparent 0.55px),
+    radial-gradient(rgba(0, 229, 255, 0.55) 0.55px, transparent 0.55px);
+  background-size: 14px 14px, 22px 22px;
+  background-position: 0 0, 7px 11px;
 }
 
 img {
@@ -72,69 +87,70 @@ button {
 /* Skip link for keyboard accessibility */
 .skip-link {
   position: fixed;
-  top: -100px;
-  left: 16px;
-  z-index: 200;
-  padding: 10px 16px;
+  top: 0;
+  left: var(--space-2);
+  z-index: 250;
+  padding: var(--space-1) var(--space-2);
   background: var(--accent-cyan);
   color: var(--bg-void);
   font-family: var(--font-mono);
   font-size: 0.875rem;
   font-weight: 700;
   border-radius: var(--radius-sm);
-  transition: top 0.2s var(--ease-out);
+  transform: translateY(-140%);
+  transition: transform 0.2s var(--ease-out);
 }
 
 .skip-link:focus {
-  top: 12px;
+  transform: translateY(var(--space-1));
 }
 
 .container {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: 18px;
+  padding-inline: var(--space-2);
 }
 
 @media (min-width: 640px) {
   .container {
-    padding-inline: 28px;
+    padding-inline: var(--space-3);
   }
 }
 
 .section {
   position: relative;
-  padding-block: 68px;
-  scroll-margin-top: calc(var(--nav-height) + 16px);
+  padding-block: var(--space-8);
+  scroll-margin-top: calc(var(--nav-height) + var(--space-2));
 }
 
 @media (min-width: 768px) {
   .section {
-    padding-block: 96px;
+    padding-block: var(--space-12);
   }
 }
 
 .section-header {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-4);
 }
 
 @media (min-width: 768px) {
   .section-header {
-    margin-bottom: 44px;
+    margin-bottom: var(--space-6);
   }
 }
 
 .section-kicker {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-cyan);
-  margin-bottom: 10px;
+  margin-bottom: var(--space-1);
 }
 
 .section-kicker::before {
@@ -155,7 +171,7 @@ button {
 }
 
 .section-subtitle {
-  margin: 10px 0 0;
+  margin: var(--space-1) 0 0;
   max-width: 64ch;
   color: var(--text-secondary);
   font-size: 0.98rem;
@@ -165,29 +181,53 @@ button {
   font-family: var(--font-mono);
 }
 
+/* Buttons & Tap Ripple Host (only transform & opacity animated) */
+.ripple-host {
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tap-ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.42) 0%, rgba(0, 229, 255, 0) 70%);
+  transform: scale(0);
+  opacity: 0.9;
+  animation: tap-ripple-expand 520ms var(--ease-out) forwards;
+}
+
+@keyframes tap-ripple-expand {
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
 .btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: var(--space-1);
   min-height: 44px;
-  padding: 11px 20px;
+  padding: 10px var(--space-3);
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   border: 1px solid transparent;
+  -webkit-tap-highlight-color: transparent;
   transition:
     transform 0.2s var(--ease-out),
-    background-color 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out),
-    color 0.2s var(--ease-out);
+    opacity 0.2s var(--ease-out);
 }
 
 .btn:active {
-  transform: translateY(1px);
+  transform: scale(0.98);
 }
 
 .btn-primary {
@@ -198,12 +238,11 @@ button {
 
 .btn-primary:hover {
   background-color: #33ebff;
-  box-shadow: 0 0 32px -4px rgba(0, 229, 255, 0.7);
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background-color: rgba(15, 21, 33, 0.9);
+  background-color: rgba(15, 21, 33, 0.92);
   color: var(--text-primary);
   border-color: var(--border-strong);
 }
@@ -213,17 +252,6 @@ button {
   color: var(--accent-cyan);
   background-color: var(--accent-cyan-soft);
   transform: translateY(-1px);
-}
-
-.btn-amber {
-  background-color: var(--accent-amber-soft);
-  color: var(--accent-amber);
-  border-color: var(--border-amber);
-}
-
-.btn-amber:hover {
-  background-color: rgba(255, 176, 32, 0.2);
-  box-shadow: var(--shadow-amber);
 }
 
 /* Custom scrollbar */
@@ -243,6 +271,14 @@ button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button {
+    cursor: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

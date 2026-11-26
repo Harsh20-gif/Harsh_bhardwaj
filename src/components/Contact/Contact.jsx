@@ -10,6 +10,7 @@ import {
   FaTerminal,
 } from 'react-icons/fa6';
 import { PROFILE } from '../../data/profile';
+import { triggerTapRipple } from '../../utils/tapRipple';
 import './Contact.css';
 
 export default function Contact({ prefersReducedMotion, onNavigate }) {
@@ -70,8 +71,11 @@ export default function Contact({ prefersReducedMotion, onNavigate }) {
                 </div>
                 <button
                   type="button"
-                  className="contact__copy-btn mono"
-                  onClick={handleCopyEmail}
+                  className="contact__copy-btn mono ripple-host"
+                  onClick={(e) => {
+                    triggerTapRipple(e);
+                    handleCopyEmail();
+                  }}
                   aria-label="Copy email address"
                 >
                   {copied ? <FaCheck aria-hidden="true" /> : <FaCopy aria-hidden="true" />}
@@ -147,7 +151,11 @@ export default function Contact({ prefersReducedMotion, onNavigate }) {
                 />
               </label>
 
-              <button type="submit" className="btn btn-primary contact__submit">
+              <button
+                type="submit"
+                className="btn btn-primary contact__submit ripple-host"
+                onClick={triggerTapRipple}
+              >
                 <FaEnvelope aria-hidden="true" />
                 <span>Send via Email Client</span>
               </button>

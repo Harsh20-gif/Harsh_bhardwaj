@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { FaCircleCheck, FaGithub, FaUpRightFromSquare, FaXmark } from 'react-icons/fa6';
 
-export default function ProjectModal({ project, onClose }) {
+export default function ProjectModal({ project, onClose, prefersReducedMotion }) {
   const closeBtnRef = useRef(null);
 
   useEffect(() => {
@@ -20,18 +21,24 @@ export default function ProjectModal({ project, onClose }) {
   if (!project) return null;
 
   return (
-    <div
+    <motion.div
       className="modal-backdrop"
       role="presentation"
+      initial={prefersReducedMotion ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+      transition={{ duration: 0.2 }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div
+      <motion.div
+        layoutId={prefersReducedMotion ? undefined : `project-card-${project.id}`}
         className="modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="project-modal-title"
+        transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="modal__header">
           <div>
@@ -97,7 +104,7 @@ export default function ProjectModal({ project, onClose }) {
             <span>Live Demo</span>
           </a>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

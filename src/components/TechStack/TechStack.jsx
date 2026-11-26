@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PROFILE } from '../../data/profile';
 import { TechIcon } from '../../utils/techIcons';
+import { triggerTapRipple } from '../../utils/tapRipple';
 import './TechStack.css';
 
 function TiltSkillCard({ item, isMobile, prefersReducedMotion }) {
@@ -23,9 +24,10 @@ function TiltSkillCard({ item, isMobile, prefersReducedMotion }) {
 
   return (
     <div
-      className={`tech-card ${tilt.active ? 'tech-card--tilting' : ''}`}
+      className={`tech-card ripple-host ${tilt.active ? 'tech-card--tilting' : ''}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={triggerTapRipple}
       style={
         !isMobile && !prefersReducedMotion
           ? {

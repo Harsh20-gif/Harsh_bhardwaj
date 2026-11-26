@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaBars, FaTerminal, FaXmark } from 'react-icons/fa6';
+import { FaBars, FaMagnifyingGlass, FaTerminal, FaXmark } from 'react-icons/fa6';
 import { PROFILE } from '../../data/profile';
+import { triggerTapRipple } from '../../utils/tapRipple';
 import './Navbar.css';
 
-export default function Navbar({ onNavigate }) {
+export default function Navbar({ onNavigate, onOpenPalette, onOpenTerminal }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeId, setActiveId] = useState('hero');
@@ -94,17 +95,50 @@ export default function Navbar({ onNavigate }) {
           </ul>
         </nav>
 
-        <button
-          ref={toggleBtnRef}
-          type="button"
-          className="navbar__toggle"
-          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-nav"
-          onClick={() => setMenuOpen((prev) => !prev)}
-        >
-          {menuOpen ? <FaXmark size={20} /> : <FaBars size={20} />}
-        </button>
+        <div className="navbar__tools">
+          <button
+            type="button"
+            className="navbar__tool-btn mono ripple-host"
+            onClick={(e) => {
+              triggerTapRipple(e);
+              onOpenPalette();
+            }}
+            aria-label="Open command palette (Ctrl+K)"
+            title="Command Palette (Ctrl+K)"
+          >
+            <FaMagnifyingGlass size={12} aria-hidden="true" />
+            <span className="navbar__kbd">Ctrl+K</span>
+          </button>
+
+          <button
+            type="button"
+            className="navbar__tool-btn navbar__tool-btn--term mono ripple-host"
+            onClick={(e) => {
+              triggerTapRipple(e);
+              onOpenTerminal();
+            }}
+            aria-label="Open terminal overlay (backtick)"
+            title="Open Terminal (`)"
+          >
+            <FaTerminal size={12} aria-hidden="true" />
+            <span className="navbar__term-hint">`</span>
+          </button>
+
+          <button
+            ref={toggleBtnRef}
+            type="button"
+            className="navbar__toggle ripple-host"
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+            onClick={(e) => {
+              triggerTapRipple(e);
+              setMenuOpen((prev) => !prev);
+            }}
+          >
+            {menuOpen ? <FaXmark size={20} /> : <FaBars size={20} />}
+          </button>
+        </div>
       </div>
 
       <nav
@@ -119,10 +153,13 @@ export default function Navbar({ onNavigate }) {
               <a
                 href={`#${item.id}`}
                 tabIndex={menuOpen ? 0 : -1}
-                className={`navbar__mobile-link ${
+                className={`navbar__mobile-link ripple-host ${
                   activeId === item.id ? 'navbar__mobile-link--active' : ''
                 }`}
-                onClick={(e) => handleLinkClick(e, item.id)}
+                onClick={(e) => {
+                  triggerTapRipple(e);
+                  handleLinkClick(e, item.id);
+                }}
               >
                 <span className="navbar__mobile-idx">0{idx + 2}</span>
                 <span>{item.label}</span>

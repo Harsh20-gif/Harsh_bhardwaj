@@ -14,6 +14,8 @@
     />
     <meta name="author" content="Harsh Bhardwaj" />
     <meta name="theme-color" content="#07090d" />
+    <link rel="icon" href="/Harsh_bhardwaj/favicon.ico" />
+    <link rel="preload" as="image" href="/Harsh_bhardwaj/portrait.webp" fetchpriority="high" />
     <link rel="canonical" href="https://harsh20-gif.github.io/Harsh_bhardwaj/" />
 
     <!-- Open Graph -->
@@ -45,13 +47,24 @@
     />
     <meta name="twitter:image" content="https://harsh20-gif.github.io/Harsh_bhardwaj/og-image.jpg" />
 
-    <!-- Fonts -->
+    <!-- Async Non-Blocking Font Loading (does not block module scripts or FCP) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href =
+          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap';
+        document.head.appendChild(l);
+      });
+    </script>
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      />
+    </noscript>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">

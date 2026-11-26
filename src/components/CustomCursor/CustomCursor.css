@@ -1,0 +1,30 @@
+.custom-cursor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+}
+
+.custom-cursor__dot,
+.custom-cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: opacity 180ms var(--ease-out);
+}
+
+.custom-cursor__dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent-cyan);
+}
+
+.custom-cursor__ring {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(0, 229, 255, 0.65);
+  background: rgba(0, 229, 255, 0.04);
+}

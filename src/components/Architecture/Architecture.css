@@ -2,16 +2,16 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: var(--space-2);
   box-shadow: var(--shadow-card);
 }
 
 .arch__toolbar {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-bottom: 16px;
-  margin-bottom: 20px;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -19,7 +19,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   font-size: 0.78rem;
 }
 
@@ -58,7 +58,6 @@
 .arch__pipeline {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .arch__step-wrapper {
@@ -73,26 +72,30 @@
   background: var(--bg-code);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 14px;
+  padding: var(--space-2);
   color: var(--text-primary);
   opacity: 0.48;
-  transform: translateY(4px);
+  transform: translate3d(0, 6px, 0);
   transition:
-    opacity 0.35s var(--ease-out),
-    transform 0.35s var(--ease-out),
-    border-color 0.25s,
-    box-shadow 0.25s,
-    background-color 0.25s;
+    opacity 320ms var(--ease-out),
+    transform 320ms var(--ease-out),
+    border-color 220ms,
+    background-color 220ms;
+  will-change: transform, opacity;
 }
 
 .arch__node--lit {
   opacity: 1;
-  transform: translateY(0);
-  border-color: rgba(0, 229, 255, 0.32);
+  transform: translate3d(0, 0, 0);
+  border-color: rgba(0, 229, 255, 0.34);
 }
 
 .arch__node--security.arch__node--lit {
-  border-color: rgba(255, 176, 32, 0.4);
+  border-color: rgba(255, 176, 32, 0.45);
+}
+
+.arch__node--packet {
+  transform: translate3d(0, -2px, 0);
 }
 
 .arch__node--selected {
@@ -112,7 +115,7 @@
   justify-content: space-between;
   font-size: 0.68rem;
   color: var(--text-muted);
-  margin-bottom: 10px;
+  margin-bottom: var(--space-1);
 }
 
 .arch__node-status {
@@ -120,17 +123,15 @@
   height: 8px;
   border-radius: 50%;
   background: var(--text-muted);
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition: background-color 0.3s;
 }
 
 .arch__node--lit .arch__node-status {
   background: var(--accent-cyan);
-  box-shadow: 0 0 10px var(--accent-cyan);
 }
 
 .arch__node--security.arch__node--lit .arch__node-status {
   background: var(--accent-amber);
-  box-shadow: 0 0 10px var(--accent-amber);
 }
 
 .arch__node-main {
@@ -159,26 +160,26 @@
 .arch__node-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 0.96rem;
+  font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.25;
 }
 
 .arch__node-sub {
   margin: 2px 0 0;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
 }
 
 .arch__node-foot {
   margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  padding-top: var(--space-1);
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  font-size: 0.69rem;
+  gap: var(--space-1);
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
@@ -190,14 +191,15 @@
   color: var(--accent-amber);
 }
 
-/* Connector between nodes */
+/* Connector & Animated Data Packet (transform & opacity only) */
 .arch__connector {
   position: relative;
-  height: 28px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
+  overflow: hidden;
 }
 
 .arch__connector-line {
@@ -205,12 +207,39 @@
   width: 2px;
   height: 100%;
   background: rgba(148, 163, 184, 0.22);
-  transition: background-color 0.35s, box-shadow 0.35s;
+  transition: background-color 0.3s;
 }
 
 .arch__connector--active .arch__connector-line {
   background: var(--accent-cyan);
-  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.arch__packet {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-amber);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.arch__packet--moving {
+  animation: packet-flow-y 360ms var(--ease-out) forwards;
+}
+
+@keyframes packet-flow-y {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0) scale(0.8);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(1.2);
+  }
 }
 
 .arch__connector-arrow {
@@ -219,8 +248,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -237,8 +266,8 @@
 
 /* Inspector console */
 .arch__inspector {
-  margin-top: 20px;
-  padding: 16px;
+  margin-top: var(--space-3);
+  padding: var(--space-2);
   border-radius: var(--radius-md);
   background: var(--bg-code);
   border: 1px solid var(--border-cyan);
@@ -249,9 +278,9 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-1);
   font-size: 0.74rem;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-1);
 }
 
 .arch__inspector-label {
@@ -272,10 +301,10 @@
 .arch__inspector-code {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   padding: 10px 12px;
   border-radius: var(--radius-sm);
-  background: rgba(6, 8, 12, 0.9);
+  background: rgba(7, 9, 13, 0.94);
   border: 1px solid var(--border-subtle);
   font-size: 0.8rem;
   color: var(--text-primary);
@@ -287,9 +316,9 @@
   font-weight: 700;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 768px) {
   .arch__board {
-    padding: 24px;
+    padding: var(--space-3);
   }
 
   .arch__toolbar {
@@ -301,7 +330,7 @@
   .arch__pipeline {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px 14px;
+    gap: var(--space-2) 12px;
   }
 
   .arch__step-wrapper {
@@ -310,8 +339,8 @@
   }
 
   .arch__connector {
-    width: 24px;
-    height: auto;
+    width: 26px;
+    height: 26px;
     flex-shrink: 0;
     margin-left: 4px;
   }
@@ -321,18 +350,29 @@
     height: 2px;
   }
 
+  .arch__packet--moving {
+    animation: packet-flow-x 360ms var(--ease-out) forwards;
+  }
+
+  @keyframes packet-flow-x {
+    0% {
+      opacity: 0;
+      transform: translate3d(-12px, 0, 0) scale(0.8);
+    }
+    35% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(12px, 0, 0) scale(1.2);
+    }
+  }
+
   .arch__connector-arrow--down {
     display: none;
   }
 
   .arch__connector-arrow--right {
     display: inline-flex;
-  }
-}
-
-@media (min-width: 1100px) {
-  .arch__pipeline {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px 14px;
   }
 }
