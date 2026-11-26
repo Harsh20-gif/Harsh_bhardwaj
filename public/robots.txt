@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://harsh20-gif.github.io/Harsh_bhardwaj/sitemap.xml
